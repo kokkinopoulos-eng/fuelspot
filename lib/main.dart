@@ -75,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFF0D3F6B),
       body: Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Image.asset('assets/icon/icon.png', width: 140, height: 140),
+        Image.asset('assets/icon/splash.png', width: 140, height: 140),
         const SizedBox(height: 24),
         RichText(text: const TextSpan(
           style: TextStyle(fontSize: 38, fontWeight: FontWeight.w900, letterSpacing: 0.5),
