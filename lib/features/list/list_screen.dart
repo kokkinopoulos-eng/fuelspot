@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../shared/widgets/fuelspot_title.dart';
 import '../../shared/widgets/bg_scaffold.dart';
 import 'package:provider/provider.dart';
 import '../../core/ai/rule_based_ai.dart';
@@ -35,7 +36,7 @@ class _ListScreenState extends State<ListScreen> {
     final repo = context.watch<FuelRepository>();
     return BgScaffold(
       appBar: AppBar(
-        title: const Text('FuelSpot'),
+        title: const FuelSpotTitle(),
         actions: [IconButton(icon: const Icon(Icons.tune), onPressed: () => _showRadiusSheet(context, repo))],
       ),
       body: Column(children: [

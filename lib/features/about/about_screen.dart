@@ -12,7 +12,7 @@ class AboutScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Center(child: Column(children: [
-            Image.asset('assets/icon/icon.png', width: 80, height: 80),
+            Image.asset('assets/icon/splash.png', width: 80, height: 80),
             const SizedBox(height: 12),
             const Text('FuelSpot', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
             const Text('v1.0.0', style: TextStyle(color: Colors.grey)),

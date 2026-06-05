@@ -21,14 +21,9 @@ class TermsDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          style: TextButton.styleFrom(foregroundColor: Colors.red),
-          child: const Text('Απόρριψη'),
-        ),
         ElevatedButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('Αποδέχομαι'),
+          child: const Text('Αποδέχομαι & Συνέχεια'),
         ),
       ],
     );

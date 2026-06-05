@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -61,12 +62,12 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Future.delayed(const Duration(milliseconds: 2500), () async {
       if (mounted) {
-        final accepted = await showDialog<bool>(
+        await showDialog<bool>(
           context: context,
           barrierDismissible: false,
           builder: (_) => const TermsDialog(),
         );
-        if (mounted && accepted == true) {
+        if (mounted) {
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
               pageBuilder: (_, __, ___) => const HomeShell(),

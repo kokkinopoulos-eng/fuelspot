@@ -4,20 +4,21 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def keyPropertiesFile = rootProject.file("key.properties")
+def keyProperties = new Properties()
+keyProperties.load(new FileInputStream(keyPropertiesFile))
+
 android {
     namespace "gr.webdevelopment.fuelspot"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     defaultConfig {
         applicationId "gr.webdevelopment.fuelspot"
         minSdkVersion flutter.minSdkVersion
@@ -25,10 +26,17 @@ android {
         versionCode flutter.versionCode
         versionName flutter.versionName
     }
-
+    signingConfigs {
+        release {
+            keyAlias keyProperties['keyAlias']
+            keyPassword keyProperties['keyPassword']
+            storeFile keyProperties['storeFile'] ? file(keyProperties['storeFile']) : null
+            storePassword keyProperties['storePassword']
+        }
+    }
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
