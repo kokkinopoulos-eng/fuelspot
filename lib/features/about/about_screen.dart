@@ -15,7 +15,7 @@ class AboutScreen extends StatelessWidget {
             Image.asset('assets/icon/splash.png', width: 80, height: 80),
             const SizedBox(height: 12),
             const Text('FuelSpot', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-            const Text('v1.0.0', style: TextStyle(color: Colors.grey)),
+            const Text('v1.0.2', style: TextStyle(color: Colors.grey)),
             const SizedBox(height: 4),
             const Text('By Kokkinopoulos Babis', style: TextStyle(color: Colors.grey, fontSize: 13)),
           ])),
