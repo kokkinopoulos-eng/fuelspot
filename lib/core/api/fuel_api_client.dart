@@ -97,6 +97,9 @@ class FuelApiClient {
         prices: const {},
         updatedAt: DateTime.now(),
         dataSource: StationDataSource.osm,
+        operator: (tags['operator'] ?? '') as String,
+        phone: (tags['phone'] ?? tags['contact:phone'] ?? '') as String,
+        openingHours: (tags['opening_hours'] ?? '') as String,
       ));
     }
     return stations;

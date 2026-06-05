@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import '../../core/models/station.dart';
 import '../../core/repositories/fuel_repository.dart';
 import '../../shared/theme/brand_colors.dart';
@@ -132,6 +134,54 @@ class StationDetailScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
+              // Mini χάρτης
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: SizedBox(
+                  height: 180,
+                  child: FlutterMap(
+                    options: MapOptions(
+                      initialCenter: LatLng(station.lat, station.lon),
+                      initialZoom: 15.5,
+                      interactionOptions: const InteractionOptions(flags: InteractiveFlag.none),
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        userAgentPackageName: 'gr.webdevelopment.fuelspot',
+                      ),
+                      MarkerLayer(markers: [
+                        Marker(
+                          point: LatLng(station.lat, station.lon),
+                          width: 40, height: 40,
+                          child: Icon(Icons.location_pin, size: 40, color: brand.primary),
+                        ),
+                      ]),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Πληροφορίες
+              if (station.operator.isNotEmpty || station.phone.isNotEmpty || station.openingHours.isNotEmpty) ...[
+                Text('Πληροφορίες', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: brand.primary)),
+                const SizedBox(height: 10),
+                if (station.operator.isNotEmpty)
+                  _infoRow(Icons.business, 'Υπεύθυνος', station.operator, brand),
+                if (station.phone.isNotEmpty)
+                  InkWell(
+                    onTap: () async {
+                      final uri = Uri.parse('tel:' + station.phone.replaceAll(' ', ''));
+                      if (await canLaunchUrl(uri)) await launchUrl(uri);
+                    },
+                    child: _infoRow(Icons.phone, 'Τηλέφωνο', station.phone, brand, isLink: true),
+                  ),
+                if (station.openingHours.isNotEmpty)
+                  _infoRow(Icons.schedule, 'Ωράριο', _formatHours(station.openingHours), brand),
+                const SizedBox(height: 16),
+              ],
+
               // Buttons
               Row(children: [
                 Expanded(child: ElevatedButton.icon(
@@ -170,4 +220,38 @@ class StationDetailScreen extends StatelessWidget {
     );
   }
 
+
+  Widget _infoRow(IconData icon, String label, String value, BrandTheme brand, {bool isLink = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(
+          width: 32, height: 32,
+          decoration: BoxDecoration(
+            color: brand.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, size: 16, color: brand.primary),
+        ),
+        const SizedBox(width: 10),
+        Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(label, style: TextStyle(fontSize: 11, color: Colors.grey.shade500)),
+          Text(value, style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: isLink ? brand.primary : Colors.black87,
+            decoration: isLink ? TextDecoration.underline : null,
+          )),
+        ])),
+      ]),
+    );
+  }
+
+  String _formatHours(String hours) {
+    if (hours == '24/7') return 'Ανοιχτό 24 ώρες';
+    return hours
+        .replaceAll('Mo', 'Δευ').replaceAll('Tu', 'Τρι').replaceAll('We', 'Τετ')
+        .replaceAll('Th', 'Πεμ').replaceAll('Fr', 'Παρ').replaceAll('Sa', 'Σαβ')
+        .replaceAll('Su', 'Κυρ').replaceAll('off', 'κλειστά');
+  }
 }

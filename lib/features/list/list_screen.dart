@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../shared/widgets/bg_scaffold.dart';
 import 'package:provider/provider.dart';
 import '../../core/ai/rule_based_ai.dart';
 import '../../core/api/location_service.dart';
@@ -32,7 +33,7 @@ class _ListScreenState extends State<ListScreen> {
   Widget build(BuildContext context) {
     final loc = context.watch<LocationService>();
     final repo = context.watch<FuelRepository>();
-    return Scaffold(
+    return BgScaffold(
       appBar: AppBar(
         title: const Text('FuelSpot'),
         actions: [IconButton(icon: const Icon(Icons.tune), onPressed: () => _showRadiusSheet(context, repo))],

@@ -10,6 +10,9 @@ class Station {
   final Map<String, double> prices;
   final DateTime updatedAt;
   final StationDataSource dataSource;
+  final String operator;
+  final String phone;
+  final String openingHours;
   double? distanceKm;
 
   Station({
@@ -17,6 +20,7 @@ class Station {
     required this.address, required this.lat, required this.lon,
     required this.prices, required this.updatedAt,
     this.dataSource = StationDataSource.mock, this.distanceKm,
+    this.operator = '', this.phone = '', this.openingHours = '',
   });
 
   factory Station.fromJson(Map<String, dynamic> json) => Station(
@@ -37,6 +41,7 @@ class Station {
   Station copyWith({double? distanceKm, Map<String, double>? prices}) => Station(
     id: id, name: name, brand: brand, address: address,
     lat: lat, lon: lon, updatedAt: updatedAt, dataSource: dataSource,
+    operator: operator, phone: phone, openingHours: openingHours,
     prices: prices ?? this.prices,
     distanceKm: distanceKm ?? this.distanceKm,
   );
