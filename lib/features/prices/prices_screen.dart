@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/data/remote_prices_service.dart';
 import '../../shared/widgets/bg_scaffold.dart';
 import 'package:provider/provider.dart';
 import '../../core/api/location_service.dart';
@@ -20,10 +21,10 @@ class _PricesScreenState extends State<PricesScreen> {
     final loc = context.watch<LocationService>();
     final detected = loc.current != null
         ? NomosRepository.detectNomos(loc.current!.lat, loc.current!.lon)
-        : NomosRepository.all[0];
+        : RemotePricesService.current[0];
     final current = _selected ?? detected;
 
-    final filtered = NomosRepository.all
+    final filtered = RemotePricesService.current
         .where((n) => _search.isEmpty || n.name.toLowerCase().contains(_search.toLowerCase()))
         .toList();
 
@@ -69,7 +70,7 @@ class _PricesScreenState extends State<PricesScreen> {
               _bigPrice('LPG', current.lpg),
             ]),
             const SizedBox(height: 10),
-            Text('Πηγή: Παρατηρητήριο ΥΠΑΝ • ${NomosRepository.dataDate}',
+            Text('Πηγή: Παρατηρητήριο ΥΠΑΝ • ${RemotePricesService.date}',
                 style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 11)),
           ]),
         ),
@@ -93,13 +94,13 @@ class _PricesScreenState extends State<PricesScreen> {
           child: Row(children: [
             Expanded(child: _extremeCard(
               label: 'Φθηνότερος νομός',
-              nomos: NomosRepository.all.reduce((a, b) => (a.unleaded95 ?? 999) < (b.unleaded95 ?? 999) ? a : b),
+              nomos: RemotePricesService.current.reduce((a, b) => (a.unleaded95 ?? 999) < (b.unleaded95 ?? 999) ? a : b),
               isLow: true,
             )),
             const SizedBox(width: 8),
             Expanded(child: _extremeCard(
               label: 'Ακριβότερος νομός',
-              nomos: NomosRepository.all.reduce((a, b) => (a.unleaded95 ?? 0) > (b.unleaded95 ?? 0) ? a : b),
+              nomos: RemotePricesService.current.reduce((a, b) => (a.unleaded95 ?? 0) > (b.unleaded95 ?? 0) ? a : b),
               isLow: false,
             )),
           ]),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/data/remote_prices_service.dart';
 import '../../core/data/nomos_prices.dart';
 import '../theme/app_theme.dart';
 
@@ -69,9 +70,9 @@ class _NomosPanelState extends State<NomosPanel> {
           SizedBox(
             height: 220,
             child: ListView.builder(
-              itemCount: NomosRepository.all.length,
+              itemCount: RemotePricesService.current.length,
               itemBuilder: (context, i) {
-                final nomos = NomosRepository.all[i];
+                final nomos = RemotePricesService.current[i];
                 final isSel = nomos.name == _selected.name;
                 return InkWell(
                   onTap: () => setState(() { _selected = nomos; _expanded = false; }),
@@ -98,7 +99,7 @@ class _NomosPanelState extends State<NomosPanel> {
             child: Row(children: [
               Icon(Icons.info_outline, size: 11, color: Colors.grey.shade400),
               const SizedBox(width: 4),
-              Text('Πηγή: ΥΠΑΝ ${NomosRepository.dataDate}',
+              Text('Πηγή: ΥΠΑΝ ${RemotePricesService.date}',
                   style: TextStyle(fontSize: 10, color: Colors.grey.shade400)),
             ]),
           ),

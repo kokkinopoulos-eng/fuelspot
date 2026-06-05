@@ -6,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'core/api/fuel_api_client.dart';
+import 'core/data/remote_prices_service.dart';
 import 'core/api/location_service.dart';
 import 'core/repositories/fuel_repository.dart';
 import 'features/list/list_screen.dart';
@@ -20,6 +21,7 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Hive.initFlutter();
   await initializeDateFormatting('el_GR', null);
+  RemotePricesService.fetchAndUpdate(); // fire and forget
   runApp(const FuelSpotApp());
   FlutterNativeSplash.remove();
 }
